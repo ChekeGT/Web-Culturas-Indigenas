@@ -1,0 +1,20 @@
+{% extends 'core/base.html' %}
+{% block title %}Culturas {% endblock %}
+{% block content %}
+    {% load static %}
+    <section class="photostack photostack-start">
+        <div>
+        {% for culture in culture_list %}
+                <a href="{% url 'culture_detail' culture.pk culture.name|slugify %}">
+                <figure class="photostack-img">
+                    <img src="{{ culture.image.url }}" alt="{{ culture.image_description }}"
+                    title="{{ culture.image_description }}">
+                    <figcaption>
+                            <h2 class="photostack-title">Cultura {{ culture.name|capfirst }}</h2>
+                    </figcaption>
+                </figure>
+                </a>
+        {% endfor %}
+        </div>
+    </section>
+{% endblock %}

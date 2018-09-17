@@ -3,7 +3,7 @@
 
 * {
 	margin: 0;
-	padding: 0px;
+	padding: 0;
     font-family: 'Roboto Slab',Arial,sans-serif;
 }
 body {
@@ -340,7 +340,6 @@ ul.clients li.banner-wrap .featured-thumbnail img:hover {
     font-size: 30px;
 }
 .slides-pagination a {
-    display: block;
     display: inline-block;
     overflow: hidden;
     margin: 8px;
@@ -358,7 +357,6 @@ ul.clients li.banner-wrap .featured-thumbnail img:hover {
     -webkit-transform-origin: 0 100%;
     -ms-transform-origin: 0 100%;
     transform-origin: 0 100%;
-    zoom: 1;
     zoom: 1;
 }
 .slides-pagination a.current {

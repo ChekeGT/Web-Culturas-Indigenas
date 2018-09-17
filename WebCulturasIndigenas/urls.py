@@ -20,6 +20,9 @@ from django.conf import settings
 urlpatterns = [
     #Paths del core
     path('', include('core.urls')),
+    #Paths de las culturas
+    path('cultures/', include('indigenous_culture.urls')),
+    #Path Del Admin
     path('admin/', admin.site.urls),
 ]
 

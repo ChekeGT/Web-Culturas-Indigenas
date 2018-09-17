@@ -1,0 +1,19 @@
+{% extends 'core/base.html' %}
+{% block title %}Cultura {{ culture.name|capfirst }}{% endblock %}
+{% block content %}
+    {% load static %}
+     <article class="container">
+            <h2 class="centered" style="font-size: 6rem;"> Cultura {{ culture.name|capfirst }}</h2>
+            <figure>
+                <img class="photostack" src="{{ culture.image.url }}" alt="{{ culture.image_description }}"
+                title="{{ culture.image_description }}">
+            </figure>
+            <p class="text">
+                {{ culture.description|linebreaks }}
+            </p>
+            <p>
+                Actualizado por ultima vez el:{{ culture.updated|date:'SHORT_DATE_FORMAT' }}
+            </p>
+            <a href="{% url 'dict_detail' culture.pk %}" class="btn-link" style="color:#A79A74;">Diccionario</a>
+        </article>
+{% endblock %}

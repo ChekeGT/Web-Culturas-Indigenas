@@ -1,0 +1,37 @@
+{% extends 'core/base.html' %}
+{% block title %}Dicionario De La Cultura {{ culture.name }}{% endblock %}
+{% block content %}
+    {% load static %}
+    <div class="container">
+        <textarea id="content" class="form-control mb-2 mt-3" rows="3" placeholder="Escribe la palabra a traducir aqui:" >
+        </textarea>
+        <button id="send" class="btn btn-primary btn-sm btn-block" disabled>Traducir</button>
+        <script>
+              document.getElementById('content').value = '';
+        </script>
+       <script>
+            var send = document.getElementById("send");
+                  send.addEventListener("click", function(){
+                      var content = encodeURIComponent(document.getElementById('content').value);
+                      if (content.length > 0){
+                      const url = "{% url 'translate' culture.pk %}"+ '?content=' + content;
+                      fetch(url, {'credentials':"include"}).then(response => response.json()).then(function (data) {
+                          if (data.answer){
+                              document.getElementById('content').value =  data.answer;
+                          }
+                      })}
+                  });
+                  //Evento que activa o desactiva el boton dependiendo de si hay o no un mensaje
+                  var content = document.getElementById("content");
+                  content.addEventListener('keyup', function(){
+                      if(!this.checkValidity() ||!this.value){
+                          send.disabled = true;
+                      }
+                      else{
+                              send.disabled = false;
+                          }
+
+                  })
+       </script>
+    </div>
+{% endblock %}

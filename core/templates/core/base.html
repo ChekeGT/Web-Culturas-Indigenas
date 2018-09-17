@@ -6,7 +6,7 @@
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE-edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>{% block title %}{% endblock %}</title>
+		<title>{% block title %}{% endblock %}| Oaxaca Hogar Indigena</title>
 		<link rel="stylesheet" type="text/css" href="{%static 'core/css/bootstrap.min.css' %}">
 		<link rel="stylesheet" type="text/css" href="{%static 'core/css/style.css' %}">
 		<link rel="stylesheet" type="text/css" href="{% static 'core/fonts/font-awesome.min.css' %}">
@@ -29,6 +29,9 @@
                         <a href="{% url 'home' %}">Home</a>
                     </li>
                     <li>
+                        <a href="{% url 'culture_list' %}">Culturas</a>
+                    </li>
+                    <li>
                         <a href="#">Media</a>
                     </li>
                     <li>
@@ -45,9 +48,32 @@
         </div>
     </nav>
     <!-- ///// Contenido ///// -->
+    <main>
     {% block content %}
     {% endblock %}
+    </main>
+    <!-- Pie De Pagina -->
+      <footer>
+        <div class="container">
+            <div class="row mt presentation">
+              <h1 class="centered">Que Es Este Sitio Web?</h1>
+              <hr>
 
+              <div class="col-lg-4 col-md-4">
+                <h3>Enciclopedia Digital de Culturas Indigenas</h3>
+              </div>
+
+              <div class="col-lg-4 col-md-4">
+                <p>Lorem Ipsum has been the industry's standard dummy text ever since, when an unknown ristique senectus et netus.</p>
+              </div>
+
+              <div class="col-lg-4 col-md-4">
+                <p>Lorem Ipsum has been the industry's standard dummy text ever since, when an unknown ristique senectus et netus.
+                Lorem Ipsum has been the industry's standard dummy text ever since, when an unknown ristique senectus et netus.</p>
+              </div>
+            </div>
+        </div>
+    </footer>
     <!-- Scripts -->
     <script type="text/javascript" src="{% static 'core/js/jquery.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'core/js/bootstrap.min.js' %}"></script>

@@ -1,8 +1,40 @@
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 from  .models import Culture
-from django.http.response import JsonResponse
+from .forms import CultureForm
+from django.contrib.admin.views.decorators import staff_member_required
+from django.urls import reverse_lazy
+from django.utils.text import slugify
+from django.utils.decorators import method_decorator
 # Create your views here.
 
+
+@method_decorator(staff_member_required(), name='dispatch')
+class CultureCreateView(CreateView):
+    template_name = 'indigenous_culture/culture_create_or_edit.html'
+    model = Culture
+    form_class = CultureForm
+
+    def get_success_url(self):
+        return reverse_lazy('culture_detail', args=[self.object.pk, slugify(self.object.name)]) + '?created'
+
+
+@method_decorator(staff_member_required(), name='dispatch')
+class CultureEditView(UpdateView):
+    template_name = 'indigenous_culture/culture_create_or_edit.html'
+    model = Culture
+    form_class = CultureForm
+
+    def get_success_url(self):
+        return reverse_lazy('culture_detail', args=[self.object.pk, slugify(self.object.name)]) + '?updated'
+
+
+@method_decorator(staff_member_required(), name='dispatch')
+class CultureDeleteView(DeleteView):
+    template_name = 'indigenous_culture/culture_delete.html'
+    model = Culture
+
+    def get_success_url(self):
+        return reverse_lazy('culture_list') + '?deleted'
 
 class CultureListView(ListView):
     template_name = 'indigenous_culture/culture_list.html'
@@ -14,20 +46,3 @@ class CultureDetailView(DetailView):
     model = Culture
 
 
-class DictDetailView(DetailView):
-    template_name = 'indigenous_culture/dict.html'
-    model = Culture
-
-
-def DictResponse(request, pk):
-    json_response = {'answer':''}
-    culture = Culture.objects.get(pk=pk)
-    culture_words = [word.word_translated for word in culture.dict.words.all()]
-    content = request.GET.get('content')
-    if content:
-        if content in culture_words:
-            word = culture.dict.words.get(word_translated=content)
-            json_response['answer'] = word.word
-        else:
-            json_response['answer'] = 'Palabra sin traduccion o inexistente'
-    return  JsonResponse(json_response)

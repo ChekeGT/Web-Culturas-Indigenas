@@ -1,0 +1,9 @@
+{% extends 'core/base.html' %}
+{% block title %}Borrar {{ culture.name }}{% endblock %}
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        <p><em>¿Estás seguro de que quieres borrar "<b>{{ object }}</b>"?</em></p>
+        <input type="submit" class="btn btn-primary btn-block" value="Sí, borrar la cultura" />
+    </form>
+{% endblock %}

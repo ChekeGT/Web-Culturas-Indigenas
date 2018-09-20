@@ -2,10 +2,27 @@
 {% block title %}Culturas {% endblock %}
 {% block content %}
     {% load static %}
+    {% if request.user.is_staff %}
+    <div class="container">
+        <nav class="nav-justified">
+            <a href="{% url 'culture_create' %}">Crear una cultura</a>
+        </nav>
+    </div>
+    {% endif %}
+    {% if 'deleted' in request.GET %}
+        <p class="centered" style="color:red;">Pagina eliminada correctamente</p>
+    {% endif %}
+    {% if 'word_deleted' in request.GET %}
+        <p class="centered" style="color:red;">Palabra eliminada correctamente</p>
+    {% endif %}
     <section class="photostack photostack-start">
         <div>
+        <!--Por cada cultura que exista en la db-->
         {% for culture in culture_list %}
+            <!--Cubrimos un marco con un enlace a
+            una descripcion detallada de esta-->
                 <a href="{% url 'culture_detail' culture.pk culture.name|slugify %}">
+                <!--Imagen de aspecto general sobre la cultura-->
                 <figure class="photostack-img">
                     <img src="{{ culture.image.url }}" alt="{{ culture.image_description }}"
                     title="{{ culture.image_description }}">

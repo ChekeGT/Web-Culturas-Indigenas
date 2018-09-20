@@ -23,3 +23,6 @@ class Dict(models.Model):
         ordering = ['created']
         verbose_name = 'Diccionario'
         verbose_name_plural = 'Diccionarios'
+
+    def __str__(self):
+        return  'Diccionario Numero:{}'.format(self.pk)

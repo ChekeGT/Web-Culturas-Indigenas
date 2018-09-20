@@ -1,6 +1,7 @@
 from django.db import models
 from django.dispatch import receiver
 from translate.models import Dict
+from blog.models import Blog
 from django.db.models.signals import pre_save, post_delete
 # Create your models here.
 
@@ -12,6 +13,7 @@ class Culture(models.Model):
     image_description = models.CharField(max_length=200, verbose_name='Descripcion de imagen')
     description = models.TextField(verbose_name='Descripcion')
     dict = models.OneToOneField(Dict, on_delete=models.CASCADE, null=True, blank=True)
+    blog = models.OneToOneField(Blog, on_delete=models.CASCADE, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True, verbose_name='Fecha de creacion')
     updated = models.DateTimeField(auto_now=True, verbose_name='Fecha de edicion')
 
@@ -28,6 +30,8 @@ class Culture(models.Model):
 def ensure_dict_is_created(sender, instance, **kwargs):
         if instance.dict == None:
             instance.dict = Dict.objects.create()
+        if instance.blog == None:
+            instance.blog = Blog.objects.create()
         if 'cultura' in instance.name.lower():
             instance.name = instance.name.lower().replace('cultura', '')
             instance.name = instance.name.capitalize()

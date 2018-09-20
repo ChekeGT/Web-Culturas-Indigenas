@@ -2,21 +2,36 @@
 {% block title %}Dicionario De La Cultura {{ culture.name }}{% endblock %}
 {% block content %}
     {% load static %}
+    {% if request.user.is_staff %}
+        <p><a href="{% url 'dict_add' culture.pk %}">Agregar Palabras Al Diccionario</a></p>
+        {% if culture.dict.words.all|length > 0 %}
+        <p><a href="{% url 'word_list' culture.pk %}">Editar O Borrar Palabras Del Diccionario</a></p>
+        {% endif %}
+    {% endif %}
     <div class="container">
         <textarea id="content" class="form-control mb-2 mt-3" rows="3" placeholder="Escribe la palabra a traducir aqui:" >
         </textarea>
         <button id="send" class="btn btn-primary btn-sm btn-block" disabled>Traducir</button>
+    </div>
         <script>
               document.getElementById('content').value = '';
         </script>
        <script>
             var send = document.getElementById("send");
+            //Cuando hacemos click en el boton con el id send
                   send.addEventListener("click", function(){
+                      //Obtenemos el contenido
                       var content = encodeURIComponent(document.getElementById('content').value);
+                      //Si la longitud de el contenido es mayor a 0
                       if (content.length > 0){
+                      /*Creamos una url, que se va a renderizar en la vista
+                      mediante django para hacer una peticion asincrona*/
                       const url = "{% url 'translate' culture.pk %}"+ '?content=' + content;
+                      //Hacemos la peticion asincrona
                       fetch(url, {'credentials':"include"}).then(response => response.json()).then(function (data) {
+                          //Si hay una respuesta por parte del servidor
                           if (data.answer){
+                              //Ponemos dentro del textarea el valor de la respuesta
                               document.getElementById('content').value =  data.answer;
                           }
                       })}
@@ -33,5 +48,4 @@
 
                   })
        </script>
-    </div>
 {% endblock %}

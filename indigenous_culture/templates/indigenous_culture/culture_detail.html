@@ -3,17 +3,32 @@
 {% block content %}
     {% load static %}
      <article class="container">
+            <!--Nombre de la cultura capitalizado-->
+            {% if 'created' in request.GET %}
+                <p style="color:green;">Cultura Creada Correctamente</p>
+            {% endif %}
+            {% if 'updated' in request.GET %}
+                <p style="color:green;">Cultura Actualizada Correctamente</p>
+            {% endif %}
             <h2 class="centered" style="font-size: 6rem;"> Cultura {{ culture.name|capfirst }}</h2>
             <figure>
+                <!-- Imagen de la cultura-->
                 <img class="photostack" src="{{ culture.image.url }}" alt="{{ culture.image_description }}"
                 title="{{ culture.image_description }}">
             </figure>
+         <!--Descripcion de la cultura-->
             <p class="text">
                 {{ culture.description|linebreaks }}
             </p>
+         <!--Ultima fecha en la que se actualizo-->
             <p>
                 Actualizado por ultima vez el:{{ culture.updated|date:'SHORT_DATE_FORMAT' }}
             </p>
+         <!--Enlace al traductor-->
             <a href="{% url 'dict_detail' culture.pk %}" class="btn-link" style="color:#A79A74;">Diccionario</a>
+            <br>
+            <a href="{% url 'culture_delete' culture.name|slugify culture.pk %}" class="btn-link">Borrar</a>
+            <br>
+            <a href="{% url 'culture_edit' culture.name|slugify culture.pk%}" class="btn-link">Editar</a>
         </article>
 {% endblock %}

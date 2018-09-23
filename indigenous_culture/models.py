@@ -40,6 +40,7 @@ def ensure_dict_is_created(sender, instance, **kwargs):
 def ensure_dict_and_their_words_are_deleted_(sender, instance, *args, **kwargs):
     for word in instance.dict.words.all():
         word.delete()
+    instance.blog.delete()
     instance.dict.delete()
 
 

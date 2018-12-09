@@ -1,0 +1,55 @@
+{% extends 'core/base.html' %}
+{% block title %}Editar O Borrar Palabras{% endblock %}
+{% block content %}
+    <div class="container">
+        <textarea id="content" class="form-control mb-2 mt-3" rows="3" placeholder="Escribe la palabra en español aqui:" >
+        </textarea>
+        <button id="delete" class="btn btn-primary btn-sm btn-block">Borrar</button>
+        <button id="edit" class="btn btn-primary btn-sm btn-block">Editar</button>
+    </div>
+    <script>
+        var btn_delete = document.getElementById('delete');
+        var btn_edit = document.getElementById('edit');
+        content = document.getElementById('content');
+        content.value = ''
+    </script>
+    <script>
+        {% comment %}
+            Cuando hacemos click con el boton de borrar
+        {% endcomment %}
+        btn_delete.addEventListener('click', function () {
+                content = encodeURIComponent(content.value);
+                if (content.length > 0 && content !== undefined) {
+                    var url = "{% url 'word_edit_or_delete_response' culture.pk %}" + '?word=' + content;
+                    fetch(url, {'credentials':"include"}).then(response => response.json()).then(function (data){
+                        console.log(data);
+                        if (data.word_pk){
+                             location.href = "{% url 'word_delete' 1 %}".replace('1', data.word_pk)
+                        }else{
+                            document.getElementById('content').value = 'No existe esa palabra en el diccionario'
+                        }
+                    })
+                }else{
+                    document.getElementById('content').value = 'Escribe tu palabra a borrar o editar aqui.';
+                }
+        });
+        btn_edit.addEventListener('click', function () {
+            content = encodeURIComponent(content.value);
+            if (content.length > 0 && content !== undefined){
+                console.log(content);
+                    url = "{% url 'word_edit_or_delete_response' culture.pk %}" + '?word=' + content;
+                    fetch(url, {'credentials': "include"}).then(response => response.json()).then(function (data) {
+                        console.log(data);
+                        if (data.word_pk){
+                            location.href = "{% url 'word_edit' 1 %}".replace('1', data.word_pk)
+
+                        }else{
+                            document.getElementById('content').value = 'No existe esa palabra en el diccionario';
+                        }
+                    })
+            }else{
+                document.getElementById('content').value = 'Escribe tu palabra a borrar o editar aqui.';
+            }
+        })
+    </script>
+{% endblock %}

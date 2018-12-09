@@ -24,6 +24,7 @@ urlpatterns = [
     path('cultures/', include('indigenous_culture.urls')),
     #Paths de translate
     path('translate/', include('translate.urls')),
+    #Paths de Registration
     #Paths del Blog
     path('blog/', include('blog.urls')),
     #Path Del Admin

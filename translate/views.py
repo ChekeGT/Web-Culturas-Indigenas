@@ -14,7 +14,7 @@ class DictDetailView(DetailView):
 
 @method_decorator(staff_member_required(), name='dispatch')
 class WordListView(DetailView):
-    template_name = 'translate/word_list.html'
+    template_name = 'translate/word_edit_or_delete.html'
     model = Culture
 
     def get_object(self, queryset=None):
@@ -53,6 +53,21 @@ class WordEditView(UpdateView):
         return form
 
 @staff_member_required()
+def WordEditOrDeleteResponse(request,pk):
+    json_response = {'word_pk': False}
+    try:
+        culture = Culture.objects.get(pk=pk)
+        print(request.GET.get('word'))
+        word = culture.dict.words.get(word_translated=request.GET.get('word'))
+        json_response['word_pk'] = word.pk
+        print(json_response)
+        return JsonResponse(json_response)
+    except Word.DoesNotExist:
+        print(json_response)
+        return JsonResponse(json_response)
+    except Exception as e:
+        print(type(e).__name__)
+@staff_member_required()
 def DictEditResponse(request, pk):
     json_response = {'word': False, 'word_tranlated': False}
     'Obtenemos la cultura en base a su pk'
@@ -65,8 +80,11 @@ def DictEditResponse(request, pk):
     if word and word_translated:
         'Intentamos'
         try:
+            for word in culture.dict.words.all():
+                if word.word_translated == word_translated:
+                    raise ValueError
             '''Creamos un objeto de tipo palabra con la palabra en 
-            lenguaje indigena y la palabra en espanol'''
+                lenguaje indigena y la palabra en espanol'''
             word_object = Word.objects.create(word=word, word_translated=word_translated)
             'Lo agregamos al diccionario'
             culture.dict.words.add(word_object)
@@ -77,7 +95,7 @@ def DictEditResponse(request, pk):
             'Si todo sale bien agregamos true a los dos valores'
             json_response['word_tranlated'] = True
             json_response['word'] = True
-    'Retornamos el JsonResponse'
+        'Retornamos el JsonResponse'
     return JsonResponse(json_response)
 
 

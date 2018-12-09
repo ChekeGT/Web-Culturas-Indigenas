@@ -3,9 +3,9 @@
 {% block content %}
     {% load static %}
     {% if request.user.is_staff %}
-        <p><a href="{% url 'dict_add' culture.pk %}">Agregar Palabras Al Diccionario</a></p>
+            <a href="{% url 'dict_add' culture.pk %}"><button class="btn btn-primary">Agregar Palabras al Diccionario</button></a>
         {% if culture.dict.words.all|length > 0 %}
-        <p><a href="{% url 'word_list' culture.pk %}">Editar O Borrar Palabras Del Diccionario</a></p>
+            <a href="{% url 'word_list' culture.pk %}"><button class="btn btn-primary" style="display:block; margin-top: 1rem">Editar O borrar  Palabras al Diccionario</button></a>
         {% endif %}
     {% endif %}
     <div class="container">
